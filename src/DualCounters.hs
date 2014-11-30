@@ -17,13 +17,14 @@ main = do
 makeNetworkDescription :: Frameworks t => AddHandler Char -> Moment t ()
 makeNetworkDescription addKeyEvent = do
     keys <- fromAddHandler addKeyEvent
-    let aKeys = filterE (== 'a') keys
-    let bKeys = filterE (== 'b') keys
-    let numAKeys = eventCounter aKeys
-    let numBKeys = eventCounter bKeys
+    let numAKeys = keyCounter 'a' keys
+    let numBKeys = keyCounter 'b' keys
     let numABKeys = (,) <$> numAKeys <*> numBKeys
     numABKeysChanged <- changes numABKeys
     reactimate' $ fmap (\(a, b) -> putStrLn $ "A keys: " ++ show a ++ ", B keys: " ++ show b) <$> numABKeysChanged
+
+keyCounter :: Char -> Event t Char -> Behavior t Int
+keyCounter c = eventCounter . filterE (== c)
 
 eventCounter :: Event t a -> Behavior t Int
 eventCounter = accumB 0 . fmap (const (+1))

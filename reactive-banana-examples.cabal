@@ -19,6 +19,7 @@ library
   exposed-modules:     YouPressedKey
                      , Counter
                      , DualCounters
+                     , Testing
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.7 && <4.8
